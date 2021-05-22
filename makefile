@@ -3,14 +3,15 @@
 #                                                         :::      ::::::::    #
 #    makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: lspazzin <lspazzin@student.42.fr>          +#+  +:+       +#+         #
+#    By: lodovico <lodovico@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/05/12 12:48:48 by lspazzin          #+#    #+#              #
-#    Updated: 2021/05/12 14:31:23 by lspazzin         ###   ########.fr        #
+#    Updated: 2021/05/18 14:17:24 by lodovico         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SRCS	=	srcs/main.c
+SRCS	=	srcs/main.c\
+			srcs/operation.c
 
 NAME	=	push_swap
 
