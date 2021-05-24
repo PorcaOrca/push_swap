@@ -3,15 +3,16 @@
 #                                                         :::      ::::::::    #
 #    makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: lodovico <lodovico@student.42.fr>          +#+  +:+       +#+         #
+#    By: lspazzin <lspazzin@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/05/12 12:48:48 by lspazzin          #+#    #+#              #
-#    Updated: 2021/05/18 14:17:24 by lodovico         ###   ########.fr        #
+#    Updated: 2021/05/22 10:53:56 by lspazzin         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 SRCS	=	srcs/main.c\
-			srcs/operation.c
+			srcs/operation.c\
+			srcs/push_swap.c
 
 NAME	=	push_swap
 
@@ -22,7 +23,7 @@ OBJCS	=	$(SRCS:.c=.o)
 CC		=	gcc
 
 %.o		:	%.c
-			@echo "\033[0;33mcreating objects..."
+			@echo "\033[0;33m."
 			@$(CC) $(CFLAGS) -c -o ./$@ $<
 
 all		:	$(NAME)

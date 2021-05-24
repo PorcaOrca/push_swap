@@ -6,13 +6,13 @@
 /*   By: lspazzin <lspazzin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/14 11:47:27 by lspazzin          #+#    #+#             */
-/*   Updated: 2021/05/22 10:44:43 by lspazzin         ###   ########.fr       */
+/*   Updated: 2021/05/22 12:21:10 by lspazzin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../push_swap.h"
 
-int		ft_swap(t_list **stack)
+int		ft_swap(t_list **stack, int *step_count)
 {
 	t_list	*temp;
 
@@ -22,12 +22,13 @@ int		ft_swap(t_list **stack)
 		(*stack)->next = (*stack)->next->next;
 		temp->next = *stack;
 		*stack = temp;
+		*step_count = *step_count + 1;
 		return(0);
 	}
 	return (-1);
 }
 
-int		ft_rotate_down(t_list **stack)
+int		ft_rotate_down(t_list **stack, int *step_count)
 {
 	t_list	*temp;
 
@@ -39,12 +40,13 @@ int		ft_rotate_down(t_list **stack)
 		temp->next->next = *stack;
 		*stack = temp->next;
 		temp->next = NULL;
+		*step_count = *step_count + 1;
 		return (0);
 	}
 	return (-1);
 }
 
-int		ft_rotate_up(t_list **stack)
+int		ft_rotate_up(t_list **stack, int *step_count)
 {
 	t_list	*temp;
 	t_list	*last;
@@ -56,18 +58,20 @@ int		ft_rotate_up(t_list **stack)
 		last = ft_lstlast(*stack);
 		last->next = temp;
 		temp->next = NULL;
+		*step_count = *step_count + 1;
 		return (0);
 	}
 	return (-1);
 }
 
-int		ft_push(t_list **stack_a, t_list **stack_b)
+int		ft_push(t_list **stack_a, t_list **stack_b, int *step_count)
 {
 	t_list	*temp;
 
 	if (ft_lstsize(*stack_a) > 0)
 	{
-		if (ft_lstsize(*stack_b) == 0)
+		*step_count = *step_count + 1;
+		if (!(*stack_b))
 		{
 			temp = *stack_a;
 			*stack_a = (*stack_a)->next;

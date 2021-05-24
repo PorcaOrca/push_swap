@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lodovico <lodovico@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lspazzin <lspazzin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/12 13:29:09 by lspazzin          #+#    #+#             */
-/*   Updated: 2021/05/18 16:00:37 by lodovico         ###   ########.fr       */
+/*   Updated: 2021/05/24 12:22:18 by lspazzin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,15 +71,21 @@ int		main(int argc, char *argv[])
 	t_list	**stack_b;
 	t_list	*temp;
 	int		*arr;
+	int		step_count;
 
+	step_count = 0;
 	stack_a = (t_list **)malloc(sizeof(t_list *));
 	stack_b = (t_list **)malloc(sizeof(t_list *));
 	if (!stack_a || !stack_b)
 		return (-1);
 	arr = ft_arr_init(argv, argc);
 	*stack_a = ft_lst_init(arr, argc);
-	ft_rotate_down(stack_a);
-	ft_move(stack_a, stack_b);
+	*stack_b = NULL;
+
+	ft_long_seq(stack_a, stack_b, &step_count);
+
+	printf("steps:%d\n", step_count);
+
 	temp = *stack_a;
 	printf("stack a:\n");
 	while (temp)
@@ -87,6 +93,7 @@ int		main(int argc, char *argv[])
 		printf("%d\n", *(int *)(temp->content));
 		temp = temp->next;
 	}
+
 	temp = *stack_b;
 	printf("stack b:\n");
 	while (temp)
@@ -94,7 +101,9 @@ int		main(int argc, char *argv[])
 		printf("%d\n", *(int *)(temp->content));
 		temp = temp->next;
 	}
+
 	free(stack_a);
 	free(stack_b);
+
 	return (0);
 }
