@@ -6,7 +6,7 @@
 /*   By: lspazzin <lspazzin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/12 13:29:09 by lspazzin          #+#    #+#             */
-/*   Updated: 2021/05/24 12:22:18 by lspazzin         ###   ########.fr       */
+/*   Updated: 2021/05/24 17:16:00 by lspazzin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,19 +67,42 @@ t_list	*ft_lst_init(int *arr, int len)
 
 int		main(int argc, char *argv[])
 {
-	t_list	**stack_a;
+/*	t_list	**stack_a;
 	t_list	**stack_b;
 	t_list	*temp;
-	int		*arr;
-	int		step_count;
+*/	int			*arr;
+	int			i;
+	t_lis_arr	*lis_lst;
+//	int		step_count;
 
-	step_count = 0;
+	i = 0;
+/*	step_count = 0;
 	stack_a = (t_list **)malloc(sizeof(t_list *));
 	stack_b = (t_list **)malloc(sizeof(t_list *));
 	if (!stack_a || !stack_b)
 		return (-1);
-	arr = ft_arr_init(argv, argc);
-	*stack_a = ft_lst_init(arr, argc);
+*/	arr = ft_arr_init(argv, argc);
+	while (i < (argc - 1))
+		{
+			printf("%d|", arr[i]);
+			i++;
+		}
+	printf("\n");
+	lis_lst = ft_lis(arr, argc - 1);
+	while (lis_lst)
+	{
+		i = 0;
+		printf("Array:\n");
+		while (i < lis_lst->len)
+		{
+			printf("%d|", lis_lst->seq[i]);
+			i++;
+		}
+		printf("\n");
+		lis_lst = lis_lst->next;
+	}
+
+/*	*stack_a = ft_lst_init(arr, argc);
 	*stack_b = NULL;
 
 	ft_long_seq(stack_a, stack_b, &step_count);
@@ -104,6 +127,6 @@ int		main(int argc, char *argv[])
 
 	free(stack_a);
 	free(stack_b);
-
+*/
 	return (0);
 }
