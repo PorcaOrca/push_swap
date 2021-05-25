@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   push_swap.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lspazzin <lspazzin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lodovico <lodovico@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/22 10:38:15 by lspazzin          #+#    #+#             */
-/*   Updated: 2021/05/24 17:11:43 by lspazzin         ###   ########.fr       */
+/*   Updated: 2021/05/25 13:36:31 by lodovico         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,37 +33,170 @@ t_list		*ft_min(t_list **stack_a)
 	}
 	return (min_value);
 }
-/**
-int		ft_long_seq(t_list **stack_a, t_list **stack_b, int *step_count)
-{
-	t_list		*temp;
-	t_list		*seq_start;
-	int			i;
 
-	i = 0;
-	temp = *stack_a;
-	seq_start = ft_min(stack_a);
-	while (*(int *)(temp->content) != *(int *)(seq_start->content))
+void		ft_lis_case3_del(t_lis_arr **lis_lst, int del_val, int n)
+{
+	t_lis_arr	*temp;
+	t_lis_arr	*prev;
+
+	temp = *lis_lst;
+	prev = NULL;
+	while (temp)
 	{
-		i++;
+		if (temp->len == del_val && temp->end_val != n)
+		{
+			if (prev)
+				prev->next = temp->next;
+			else
+				*lis_lst = (*lis_lst)->next;
+			free(temp->seq);
+			free(temp);
+			if (prev)
+				temp = prev->next;
+			else
+				temp = *lis_lst;
+		}
+		else
+		{
+			prev = temp;
+			temp = temp->next;
+		}
+	}
+}
+
+void		ft_lis_case3(t_lis_arr **lis_lst, int n)
+{
+	t_lis_arr	*temp;
+	int			*temp_arr;
+	int			max_inf;
+	int			del_len;
+	int			j;
+	
+	write(1, "case3: ", 7);
+	write(1, "\n", 1);
+	
+	max_inf = 0;
+	temp = *lis_lst;
+/*
+	while (temp)
+	{
+		j = 0;
+		printf("Array:\n");
+		while (j < temp->len)
+		{
+			printf("%d|", temp->seq[j]);
+			j++;
+		}
+		printf("\n");
 		temp = temp->next;
 	}
-	temp = *stack_a;
-	if (i > (ft_lstsize(*stack_a) / 2.0))
+*/
+
+	
+//  find array with the larger end value that is inferior to the number
+
+	temp = *lis_lst;
+
+	while (temp)
 	{
-		while (*(int *)((*stack_a)->content) != *(int *)(seq_start->content))
-			ft_rotate_down(stack_a, step_count);
-	}
-	else
-	{
-		while (*(int *)((*stack_a)->content) != *(int *)(seq_start->content))
-			ft_rotate_up(stack_a, step_count);
+		if (temp->end_val < n && temp->end_val > max_inf)
+			max_inf = temp->end_val;
+		temp = temp->next;
 	}
 
-	temp = *stack_a;
-	seq_start = ft_lstnew(temp->content);
+	temp = *lis_lst;
+
+	while (temp->end_val != max_inf)
+		temp = temp->next;
+	
+	j = 0;
+	temp_arr = (int *)malloc(sizeof(int) * (temp->len + 1));
+
+	while (j < temp->len)
+	{
+		temp_arr[j] = temp->seq[j];
+		j++;
+	}
+
+	del_len = temp->len + 1;
+	temp_arr[j] = n;
+	j = 0;
+	while (temp->next)
+		temp = temp->next;
+			
+	temp->next = ft_lstlis_new(temp_arr, n, del_len);
+	ft_lis_case3_del(lis_lst, del_len, n);
+/*		temp = *lis_lst;
+
+	while (temp)
+	{
+		j = 0;
+		printf("Array:\n");
+		while (j < temp->len)
+		{
+			printf("%d|", temp->seq[j]);
+			j++;
+		}
+		printf("\n");
+		temp = temp->next;
+	}
+*/	
+	write(1, "--done\n", 7);
 }
-*/
+
+void		ft_lis_case2(t_lis_arr **lis_lst, int *max, int n)
+{
+	t_lis_arr	*temp;
+	int			*temp_arr;
+	int			max_len;
+	int			j;
+	
+	write(1, "case2: ", 7);
+	write(1, "\n", 1);
+	max_len = 0;
+	temp = *lis_lst;
+	while (temp)
+	{
+		if (temp->len > max_len)
+			max_len = temp->len;
+		temp = temp->next;
+	}
+	temp = *lis_lst;
+	while (temp->len != max_len)
+		temp = temp->next;
+	temp_arr = (int *)malloc(sizeof(int) * (max_len + 1));
+	j = 0;
+	while (j < max_len)
+	{
+		temp_arr[j] = temp->seq[j];
+		j++;
+	}
+	temp_arr[j] = n;
+	while (temp->next)
+		temp = temp->next;
+	temp->next = ft_lstlis_new(temp_arr, n, max_len + 1);
+	*max = n;
+	write(1, "--done\n", 7);
+}
+
+void		ft_lis_case1(t_lis_arr **lis_lst, int *min, int n)
+{
+	t_lis_arr	*temp;
+	int			*lis_temp;
+
+	write(1, "case1: ", 7);
+	write(1, "\n", 1);
+	temp = *lis_lst;
+	while (temp->next)
+		temp = temp->next;
+	lis_temp = (int *)malloc(sizeof(int));
+	*lis_temp = n;
+	temp->next = ft_lstlis_new(lis_temp, n, 1);
+	*min = n;
+	write(1, "--done\n", 7);
+}
+
+
 t_lis_arr	*ft_lstlis_new(int *arr, int last, int lenght)
 {
 	t_lis_arr	*lis_lst;
@@ -82,114 +215,30 @@ t_lis_arr	*ft_lstlis_new(int *arr, int last, int lenght)
 t_lis_arr	*ft_lis(int *arr, int n)
 {
 	t_lis_arr	*lis_lst;
-	t_lis_arr	*temp;
-	t_lis_arr	*prev;
 	int			*lis_temp;
 	int			i;
-	int			j;
 	int			max;
 	int			min;
-	int			max_len;
-	int			max_inf;
 
-	max = 0;
-	min = 2147483647;
+	max = arr[0];
+	min = arr[0];
 	lis_temp = (int *)malloc(sizeof(int));
 	*lis_temp = arr[0];
 	lis_lst = ft_lstlis_new(lis_temp, arr[0], 1);
 	i = 1;
-	while (i <= n)
+	while (i < n)
 	{
-		temp = lis_lst;
 		if (arr[i] < min)
-		{
-			while (temp->next)
-				temp = temp->next;
-			lis_temp = (int *)malloc(sizeof(int));
-			*lis_temp = arr[i];
-			temp->next = ft_lstlis_new(lis_temp, arr[i], 1);
-			min = arr[i];
-		}
+			ft_lis_case1(&lis_lst, &min, arr[i]);
+
 		else if (arr[i] > max)
-		{
-			max_len = 0;
-			temp = lis_lst;
-			while (temp)
-			{
-				if (temp->len > max_len)
-					max_len = temp->len;
-				temp = temp->next;
-			}
-			temp = lis_lst;
-			while (temp->len != max_len)
-				temp = temp->next;
-			lis_temp = (int *)malloc(sizeof(int) * (temp->len + 1));
-			j = 0;
-			while (j < (temp->len))
-			{
-				lis_temp[j] = temp->seq[j];
-				j++;
-			}
-			while (temp->next)
-				temp = temp->next;
-			temp->next = ft_lstlis_new(lis_temp, arr[i], max_len + 1);
-			max = arr[i];
-		}
+			ft_lis_case2(&lis_lst, &max, arr[i]);
+
 		else
-		{
-			max_inf = 0;
-			temp = lis_lst;
-			while (temp)
-			{
-				if (temp->end_val < arr[i] && temp->end_val > max_inf)
-					max_inf = temp->end_val;
-				temp = temp->next;;
-			}
+			ft_lis_case3(&lis_lst, arr[i]);
 
-			temp = lis_lst;
-			while (temp->end_val != max_inf)
-				temp = temp->next;
-
-			j = 0;
-			lis_temp = (int *)malloc(sizeof(int) * (temp->len + 1));
-			while (j < temp->len)
-			{
-				lis_temp[j] = temp->seq[j];
-				j++;
-			}
-
-			free(temp->seq);
-			lis_temp[j] = arr[i];
-			temp->seq = lis_temp;
-			temp->end_val = arr[i];
-			temp->len++;
-			max_inf = temp->len;
-			temp = lis_lst;
-			prev = NULL;
-			while (temp)
-			{
-				if (!prev && temp->len == max_inf)
-				{
-					lis_lst = temp->next;
-					free(temp->seq);
-					free(temp);
-					temp = lis_lst;
-				}
-				else if (temp->len == max_inf)
-				{
-					prev->next = temp->next;
-					free(temp->seq);
-					free(temp);
-					temp = prev->next;
-				}
-				else
-				{
-					prev = temp;
-					temp = temp->next;
-				}
-			}
-		}
 		i++;
 	}
+	write(1, "end lis\n", 8);
 	return (lis_lst);
 }
